@@ -33,7 +33,7 @@
 }
 
 .heroPoint>.wordWrap {
-    max-width: 85%;
+    width: 85%;
 }
 
 .heroPoint {
@@ -50,8 +50,15 @@
 }
 
 @media only screen and (max-width: 792px) {
-    #hero {
-        width: 80vw;
-        margin-inline: auto;
+    #hero>.heroPoint p {
+        display: none;
     }
+
+    #hero>.heroPoint {
+        justify-content: start;
+    }
+}
+
+.cursorPoint {
+    cursor: pointer;
 }
