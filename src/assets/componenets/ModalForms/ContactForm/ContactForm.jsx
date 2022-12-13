@@ -11,13 +11,14 @@ import { useFormik } from 'formik'
 function ContactForm(props) {
     const uploadRef = useRef(null);
     const [imgState, setImgState] = useState();
-    const [socials, setSocials] = useState([{ 'platform': '', 'url': '', 'id': 0 }]);
+    // const [socials, setSocials] = useState([{ 'platform': '', 'url': '', 'id': 0 }]);
     const { values, handleChange, handleSubmit } = useFormik({
         initialValues: {
             fName: '',
             lName: '',
             email: '',
             phoneNumber: '',
+            link1: { 'platform': '', 'url': '', 'id': 0 },
         },
         onSubmit,
     })
@@ -31,55 +32,64 @@ function ContactForm(props) {
         // <img src={URL.createObjectURL(FILE_OBJECT)} /> 
     }
 
-    function handleChangeSocialsPlat(plat, id) {
-        let temp = socials;
-        const i = temp.findIndex((val) => val.id === id);
-        console.log(temp[i]);
-        temp[i].platform += plat;
-        setSocials(temp);
-    }
-
-    function handleChangeSocialsUrl(url, id) {
-        let temp = socials;
-        const i = temp.findIndex((val) => val.id === id);
-        console.log(temp[i]);
-        temp[i].url += url;
-        setSocials(temp);
+    function getAllLinksVal() {
+        const linksArr = [];
+        Object.keys(values).map((key, index) => {
+            if (key.includes('link')) {
+                linksArr.push(values[key])
+            }
+        })
+        return linksArr;
     }
 
     function handleAddingSocial() {
-        let allFull = false;
-        const lastid = socials[socials.length - 1].id;
-        socials.forEach((social) => {
+        const links = getAllLinksVal();
+        let allFull = true;
+        console.log(links)
+        links.forEach((social) => {
             if (!social.platform || !social.url) {
+                allFull = false;
                 alert('must fill all links or remove them')
             }
         })
 
         if (allFull) {
-            setSocials([...socials, { 'platform': '', 'url': '', 'id': lastid++ }])
+            const lastLink = links[links.length - 1];
+            console.log(lastLink)
         }
     }
 
     function renderSocialsInput() {
         const arrToReturn = [];
-        socials.forEach((social, index) => {
-            arrToReturn.push(
-                <div className='socialWrap d-flex align-items-center mt-1' key={index}>
-                    <Form.Control
-                        className='ml-3 w-25'
-                        type="text"
-                        placeholder='Platform'
-                        value={social.platform}
-                        onChange={(e) => { handleChangeSocialsPlat(e.target.value, social.id) }} />
-                    <span>:</span>
-                    <Form.Control
-                        type="text w-75"
-                        placeholder='https://www.example.com'
-                        value={social['url']}
-                        onChange={(e) => { handleChangeSocialsUrl(e.target.value, social) }} />
-                </div>)
+        Object.keys(values).map((key, index) => {
+            if (key.includes('link')) {
+                let linkCount = 1;
+                arrToReturn.push(
+                    <div className='socialWrap d-flex align-items-center mt-1' key={linkCount}>
+                        <Form.Control
+                            className='ml-3 w-25'
+                            type="text"
+                            name={`link${linkCount}.platform`}
+                            placeholder='Platform'
+                            value={values[key].platform}
+                            onChange={handleChange} />
+                        <span>:</span>
+                        <Form.Control
+                            type="text w-75"
+                            name={`link${linkCount}.url`}
+                            value={values[key].url}
+                            onChange={handleChange}
+                            placeholder='https://www.example.com'
+                        />
+                    </div>
+                )
+                linkCount++;
+            }
+
         })
+        // values.map((val) => { console.log(val) })
+        // values.forEach((social, index) => {
+
         return arrToReturn;
     }
 
