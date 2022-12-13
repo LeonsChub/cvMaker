@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
@@ -10,15 +10,15 @@ import { useFormik } from 'formik'
 
 function ContactForm(props) {
     const uploadRef = useRef(null);
+    const submitRef = useRef(null)
     const [imgState, setImgState] = useState();
-    // const [socials, setSocials] = useState([{ 'platform': '', 'url': '', 'id': 0 }]);
+    const [socials, setSocials] = useState([]);
     const { values, handleChange, handleSubmit } = useFormik({
         initialValues: {
             fName: '',
             lName: '',
             email: '',
             phoneNumber: '',
-            link1: { 'platform': '', 'url': '', 'id': 0 },
         },
         onSubmit,
     })
@@ -32,65 +32,43 @@ function ContactForm(props) {
         // <img src={URL.createObjectURL(FILE_OBJECT)} /> 
     }
 
-    function getAllLinksVal() {
-        const linksArr = [];
-        Object.keys(values).map((key, index) => {
-            if (key.includes('link')) {
-                linksArr.push(values[key])
-            }
+    function renderSocials() {
+        const arrToGet = [];
+
+        socials.forEach((social, index) => {
+            arrToGet.push(
+                <div className='d-flex align-items-center mb-1' key={index}>
+                    <div className='d-flex w-25'>
+                        <Form.Control
+                            name={`link${index}.platform`}
+                            value={values[`link${index}.platform`]}
+                            onChange={handleChange}
+                            placeholder='Platform' />
+
+                    </div>
+                    <span className='mx-1'>:</span>
+
+                    <Form.Control
+                        value={social.platform}
+                        onChange={(e) => { handleSocialInput(e.target.value, social.id, true) }}
+                        placeholder='https://example.com' />
+                </div>
+            );
         })
-        return linksArr;
+        return arrToGet;
     }
 
     function handleAddingSocial() {
-        const links = getAllLinksVal();
-        let allFull = true;
-        console.log(links)
-        links.forEach((social) => {
-            if (!social.platform || !social.url) {
-                allFull = false;
-                alert('must fill all links or remove them')
-            }
-        })
-
-        if (allFull) {
-            const lastLink = links[links.length - 1];
-            console.log(lastLink)
-        }
+        const socialToAdd = { platform: '', url: '', id: socials.length }
+        setSocials((state) => [...state, socialToAdd])
     }
 
-    function renderSocialsInput() {
-        const arrToReturn = [];
-        Object.keys(values).map((key, index) => {
-            if (key.includes('link')) {
-                let linkCount = 1;
-                arrToReturn.push(
-                    <div className='socialWrap d-flex align-items-center mt-1' key={linkCount}>
-                        <Form.Control
-                            className='ml-3 w-25'
-                            type="text"
-                            name={`link${linkCount}.platform`}
-                            placeholder='Platform'
-                            value={values[key].platform}
-                            onChange={handleChange} />
-                        <span>:</span>
-                        <Form.Control
-                            type="text w-75"
-                            name={`link${linkCount}.url`}
-                            value={values[key].url}
-                            onChange={handleChange}
-                            placeholder='https://www.example.com'
-                        />
-                    </div>
-                )
-                linkCount++;
-            }
-
-        })
-        // values.map((val) => { console.log(val) })
-        // values.forEach((social, index) => {
-
-        return arrToReturn;
+    function handleSocialInput(e, id, platform = false) {
+        const temp = socials;
+        const index = (temp.findIndex((val) => val.id === id))
+        console.log(e)
+        // !platform ? temp[index].platform = key : temp[index].url += key;
+        // console.log(temp[index])
     }
 
     return (
@@ -169,21 +147,19 @@ function ContactForm(props) {
                             size={16} />
                     </Form.Text>
 
-                    <button type='submit'>
-                        submit
-                    </button>
+                    <button type='submit' ref={submitRef} className='d-none' />
 
                     <Form.Group>
-                        {renderSocialsInput()}
+                        {renderSocials()}
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary">
-                    Save Changes
+                <Button variant="primary" onClick={() => submitRef.current.click()}>
+                    Continue
                 </Button>
             </Modal.Footer>
-        </Modal>
+        </Modal >
     )
 }
 
