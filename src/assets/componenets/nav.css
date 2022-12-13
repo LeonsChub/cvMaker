@@ -1,0 +1,14 @@
+:root {
+    --baseColor: rgb(34, 167, 255);
+}
+
+#navHeader {
+    display: flex;
+    justify-content: center;
+
+    font-size: 1.5em;
+    padding: 0.5em;
+
+    background-color: var(--baseColor);
+    color: white;
+}

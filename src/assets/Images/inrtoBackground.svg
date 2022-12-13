@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01, custom)"
+   sodipodi:docname="inrtoBackground.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="0.4792789"
+     inkscape:cx="568.56248"
+     inkscape:cy="463.19586"
+     inkscape:window-width="1299"
+     inkscape:window-height="713"
+     inkscape:window-x="67"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#dbe3de;stroke:#000000;stroke-width:0.197"
+       id="rect497"
+       width="217.26457"
+       height="256.36087"
+       x="-2.1599283"
+       y="41.015469" />
+    <path
+       style="fill:#00ccff;stroke:#000000;stroke-width:0.197"
+       d="M 277.51577,73.157029 Z"
+       id="path437" />
+    <path
+       style="fill:#00ccff;stroke:#000000;stroke-width:0.197"
+       d="M 255.62253,11.295788 Z"
+       id="path439" />
+    <path
+       style="fill:#00aad4;stroke:#000000;stroke-width:0.197"
+       d="m -0.54096394,133.82853 c 0,0 34.15119994,-88.249677 111.99543394,-61.689697 77.84427,26.559992 100.68195,-23.84068 100.68195,-23.84068 L 211.59175,-1.7521368 -1.7783439,-2.4112778 Z"
+       id="path441" />
+    <path
+       style="fill:#00ccff;stroke:#000000;stroke-width:0.197"
+       d="M 305.8352,57.945242 273.36578,94.7334"
+       id="path443" />
+    <rect
+       style="fill:#b7c8c4;stroke:#000000;stroke-width:0.197"
+       id="rect551"
+       width="39.8549"
+       height="8.259408"
+       x="-146.00517"
+       y="169.04613" />
+  </g>
+</svg>

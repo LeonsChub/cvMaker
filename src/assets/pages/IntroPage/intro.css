@@ -1,0 +1,57 @@
+#hero {
+    /* background-color: rebeccapurple; */
+    background-image: url('../../Images/inrtoBackground.svg');
+    background-color: rgb(91, 148, 221);
+    background-size: contain;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+
+    display: flex;
+    flex-flow: column;
+
+    align-items: center;
+    height: 100vh;
+
+    padding-top: 2em;
+}
+
+.heroPoint {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    width: clamp(40%, 60%, 80%);
+
+    background-color: whitesmoke;
+    border-radius: 4px;
+
+    padding: 1.5em;
+
+
+    height: 160px;
+}
+
+.heroPoint>.wordWrap {
+    max-width: 85%;
+}
+
+.heroPoint {
+    margin-bottom: 16px;
+}
+
+.heroPoint>svg {
+    margin-right: 1.5em;
+}
+
+.wordWrap {
+    display: flex;
+    flex-flow: column;
+}
+
+@media only screen and (max-width: 792px) {
+    #hero {
+        width: 80vw;
+        margin-inline: auto;
+    }
+}
