@@ -9,6 +9,7 @@ import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { useFormik } from 'formik'
 
 function ContactForm(props) {
+
     const uploadRef = useRef(null);
     const submitRef = useRef(null)
     const [imgState, setImgState] = useState();
@@ -49,8 +50,9 @@ function ContactForm(props) {
                     <span className='mx-1'>:</span>
 
                     <Form.Control
-                        value={social.platform}
-                        onChange={(e) => { handleSocialInput(e.target.value, social.id, true) }}
+                        name={`link${index}.url`}
+                        value={values[`link${index}.url`]}
+                        onChange={handleChange}
                         placeholder='https://example.com' />
                 </div>
             );
@@ -63,16 +65,8 @@ function ContactForm(props) {
         setSocials((state) => [...state, socialToAdd])
     }
 
-    function handleSocialInput(e, id, platform = false) {
-        const temp = socials;
-        const index = (temp.findIndex((val) => val.id === id))
-        console.log(e)
-        // !platform ? temp[index].platform = key : temp[index].url += key;
-        // console.log(temp[index])
-    }
-
     return (
-        <Modal show={props.surveyBegan} backdrop='static' centered size='md' >
+        <Modal show={props.show} backdrop='static' centered size='md' >
             <Modal.Header >
                 <Modal.Title>Contact Information</Modal.Title>
             </Modal.Header>

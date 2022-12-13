@@ -7,32 +7,20 @@ import { HiOutlineDocumentDuplicate } from 'react-icons/hi'
 import { FaSearch } from 'react-icons/fa'
 
 import { Link } from 'react-router-dom'
-import { useReducer } from 'react'
+import { useState } from 'react'
 
 import ContactForm from '../../componenets/ModalForms/ContactForm/ContactForm'
+import ModalSwitch from '../../componenets/ModalSwitch/ModalSwitch'
+
 export const ACTIONS = {
     startSurvey: 'START_SURVEY'
 }
 function IntroPage() {
+    const [progress, setProgress] = useState(0);
 
-    const initState = { surveyBegan: false, count: 0 };
-
-    function reducer(state, action) {
-        switch (action.type) {
-            case ACTIONS.startSurvey:
-                let temp = state;
-                temp.surveyBegan = true;
-                return { ...temp };
-                break;
-
-            default:
-                break;
-        }
+    function incrementProgress() {
+        setProgress((prev) => prev + 1);
     }
-
-    const [state, dispatch] = useReducer(reducer, initState);
-
-
 
     return (
         <>
@@ -67,12 +55,14 @@ function IntroPage() {
                     variant='info'
                     size='lg'
                     className='mb-3'
-                    onClick={() => dispatch({ type: ACTIONS.startSurvey })}>
+                    onClick={() => incrementProgress()}>
                     Let's Begin!
                 </Button>
 
             </div>
-            <ContactForm surveyBegan={state.surveyBegan} />
+            <ModalSwitch
+                progress={progress} />
+
 
         </>
     )
