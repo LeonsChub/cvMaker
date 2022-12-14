@@ -15,11 +15,15 @@ import ModalSwitch from '../../componenets/ModalSwitch/ModalSwitch'
 export const ACTIONS = {
     startSurvey: 'START_SURVEY'
 }
-function IntroPage() {
+function IntroPage({ setSuperFormAt, superForm }) {
     const [progress, setProgress] = useState(0);
 
     function incrementProgress() {
         setProgress((prev) => prev + 1);
+    }
+
+    function decrementProgress() {
+        setProgress((prev) => prev - 1);
     }
 
     return (
@@ -62,7 +66,10 @@ function IntroPage() {
             </div>
             <ModalSwitch
                 progress={progress}
-                incrementProgress={incrementProgress} />
+                incrementProgress={incrementProgress}
+                decrementProgress={decrementProgress}
+                setSuperFormAt={setSuperFormAt}
+                superForm={superForm} />
 
 
         </>

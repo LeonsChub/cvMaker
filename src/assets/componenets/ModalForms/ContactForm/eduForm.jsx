@@ -10,10 +10,11 @@ import { AiOutlinePlusCircle } from 'react-icons/ai'
 
 import { ErrorMessage, useFormik } from 'formik'
 
-function WorkForm(props) {
-    const [formErrors, setFormErrors] = useState({})
-    const submitRef = useRef(null)
-    const [workplaces, setWorkplaces] = useState([]);
+function EduForm(props) {
+    const [asked, setAsked] = useState(false);
+    const [formErrors, setFormErrors] = useState({});
+    const submitRef = useRef(null);
+    const [schools, setSchools] = useState([]);
     const { values, touched, handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: {
         },
@@ -54,37 +55,38 @@ function WorkForm(props) {
         })
 
 
+
         return valid;
     }
 
     function onSubmit(values, action) {
-        if (validateForm(values)) {
-            console.log((values))
+        if (validateForm(values) && asked) {
+            console.log(values)
             props.incrementProgress();
         }
     }
 
-    function handleAddingWorkPlace() {
-        const workplaceToAdd = { employer: '', position: '', description: '', id: cryptoRandomString({ length: 3 }) }
-        values[`link${workplaceToAdd.id}`] = {};
-        setWorkplaces((state) => [...state, workplaceToAdd])
+    function handleAddingSchool() {
+        const schoolToAdd = { employer: '', position: '', description: '', id: cryptoRandomString({ length: 3 }) }
+        values[`link${schoolToAdd.id}`] = {};
+        setSchools((state) => [...state, schoolToAdd])
     }
 
-    function handleRemovingWorkPlace(id) {
-        const i = workplaces.findIndex((val) => val.id === id)
-        const temp = workplaces;
+    function handleRemovingSchool(id) {
+        const i = schools.findIndex((val) => val.id === id)
+        const temp = schools;
 
         temp.splice(i, 1);
         delete values[`link${id}`]
-        setWorkplaces([...temp])
+        setSchools([...temp])
     }
 
-    function renderWorkplaces() {
+    function renderSchools() {
         const arrToGet = [];
 
-        workplaces.forEach((workPlace, index) => {
+        schools.forEach((school, index) => {
             const errors = formErrors;
-            const errPointer = 'link' + workPlace.id
+            const errPointer = 'link' + school.id
 
             const errClassEmployer = errors[errPointer] ? errors[errPointer].employer ? 'error' : '' : '';
             const errClassPosition = errors[errPointer] ? errors[errPointer].position ? 'error' : '' : '';
@@ -93,24 +95,24 @@ function WorkForm(props) {
             const errClassChronology = errors[errPointer] ? errors[errPointer].chronology ? 'error' : '' : '';
 
             arrToGet.push(
-                <div className="workForm" key={workPlace.id}>
+                <div className="workForm" key={school.id}>
                     <div className="d-flex align-items-center justify-content-between">
-                        <h4 className='mt-2' >Workplace {index + 1}</h4>
+                        <h4 className='mt-2' >Institute {index + 1}</h4>
                         <CgTrash
                             size={24}
                             className='mb-1 discard cursorPoint'
-                            onClick={() => handleRemovingWorkPlace(workPlace.id)} />
+                            onClick={() => handleRemovingSchool(school.id)} />
                     </div>
                     <Form.Group>
                         <div className="d-flex">
                             <div className="mr d-flex flex-column">
                                 <Form.Control
                                     className={errClassEmployer}
-                                    value={values[`workplace${workPlace.id}`]}
+                                    value={values[`school${school.id}`]}
                                     onChange={handleChange}
-                                    name={`link${workPlace.id}.employer`}
+                                    name={`link${school.id}.employer`}
                                     type='text'
-                                    placeholder='Employer' />
+                                    placeholder='School' />
                                 <span className='errorExplain'>
                                     {errors[errPointer] ? errors[errPointer].employer : ''}
                                 </span>
@@ -120,11 +122,11 @@ function WorkForm(props) {
 
                                 <Form.Control
                                     className={errClassPosition}
-                                    value={values[`workplace${workPlace.id}`]}
+                                    value={values[`school${school.id}`]}
                                     onChange={handleChange}
-                                    name={`link${workPlace.id}.position`}
+                                    name={`link${school.id}.position`}
                                     type='text'
-                                    placeholder='Position' />
+                                    placeholder='Subject' />
 
                                 <span className='errorExplain'>
                                     {errors[errPointer] ? errors[errPointer].position : ''}
@@ -142,9 +144,9 @@ function WorkForm(props) {
                             <input
                                 type="date"
                                 id='startDate'
-                                value={values[`workplace${workPlace.id}`]}
+                                value={values[`school${school.id}`]}
                                 onChange={handleChange}
-                                name={`link${workPlace.id}.startDate`} />
+                                name={`link${school.id}.startDate`} />
                             <span className='errorExplain'>
                                 {errors[errPointer] ? errors[errPointer].startDate : ''}
                             </span>
@@ -156,9 +158,9 @@ function WorkForm(props) {
                             <input
                                 type="date"
                                 id='endDate'
-                                value={values[`workplace${workPlace.id}`]}
+                                value={values[`school${school.id}`]}
                                 onChange={handleChange}
-                                name={`link${workPlace.id}.endDate`} />
+                                name={`link${school.id}.endDate`} />
                             <span className='errorExplain'>
                                 {errors[errPointer] ? errors[errPointer].endDate : ''}
                             </span>
@@ -171,9 +173,9 @@ function WorkForm(props) {
                     <Form.Group>
                         <Form.Control
                             as="textarea"
-                            value={values[`workplace${workPlace.id}`]}
+                            value={values[`school${school.id}`]}
                             onChange={handleChange}
-                            name={`link${workPlace.id}.description`}
+                            name={`link${school.id}.description`}
                             rows={5}
                             className='noResize mt-3'
                             placeholder='Description (Optional)' />
@@ -190,16 +192,16 @@ function WorkForm(props) {
     return (
         <Modal show={props.show} backdrop='static' centered size='md' >
             <Modal.Header >
-                <Modal.Title>Past Work Experience</Modal.Title>
+                <Modal.Title>Educational Past</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    {renderWorkplaces()}
+                    {renderSchools()}
                     <Form.Text
                         className='text-primary cursorPoint'
-                        onClick={() => handleAddingWorkPlace()}>
-                        Add WorkPlace
+                        onClick={() => handleAddingSchool()}>
+                        Add School
                         <AiOutlinePlusCircle
                             className='mb-1 mx-1'
                             size={16} />
@@ -221,4 +223,4 @@ function WorkForm(props) {
     )
 }
 
-export default WorkForm
+export default EduForm

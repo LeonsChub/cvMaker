@@ -23,17 +23,17 @@ function ContactForm(props) {
     const [socials, setSocials] = useState([]);
     const { values, errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: {
-            fName: 'asd',
-            lName: 'asd',
-            email: 'asd@asd.com',
-            phoneNumber: '1231231231',
+            fName: '',
+            lName: '',
+            email: '',
+            phoneNumber: '',
         },
         onSubmit,
         validationSchema: contactSchema,
     })
 
     function onSubmit(values, actions) {
-        console.log({ ...values, imgState })
+        props.setSuperFormAt({ ...values, imgState }, 0)
         props.incrementProgress();
     }
 
@@ -178,7 +178,7 @@ function ContactForm(props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={() => { console.log(errors); submitRef.current.click(); }}>
+                <Button variant="primary" onClick={() => { submitRef.current.click(); }}>
                     Continue
                 </Button>
             </Modal.Footer>
