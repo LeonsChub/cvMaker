@@ -61,7 +61,8 @@ function IntroPage() {
 
             </div>
             <ModalSwitch
-                progress={progress} />
+                progress={progress}
+                incrementProgress={incrementProgress} />
 
 
         </>

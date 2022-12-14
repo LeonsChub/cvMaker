@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
+import cryptoRandomString from "crypto-random-string"
+
 
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import { Form } from 'react-bootstrap'
 
 import { AiOutlinePlusCircle } from 'react-icons/ai'
+import { CgTrash } from 'react-icons/cg'
+
 
 import { useFormik } from 'formik'
+import './formStyle.css'
+
+import contactSchema from '../schemas/contactSchema';
 
 function ContactForm(props) {
 
@@ -14,35 +21,36 @@ function ContactForm(props) {
     const submitRef = useRef(null)
     const [imgState, setImgState] = useState();
     const [socials, setSocials] = useState([]);
-    const { values, handleChange, handleSubmit } = useFormik({
+    const { values, errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: {
-            fName: '',
-            lName: '',
-            email: '',
-            phoneNumber: '',
+            fName: 'asd',
+            lName: 'asd',
+            email: 'asd@asd.com',
+            phoneNumber: '1231231231',
         },
         onSubmit,
+        validationSchema: contactSchema,
     })
 
     function onSubmit(values, actions) {
         console.log({ ...values, imgState })
+        props.incrementProgress();
     }
 
     function handleUpload(file) {
         setImgState(file);
         // <img src={URL.createObjectURL(FILE_OBJECT)} /> 
     }
-
     function renderSocials() {
         const arrToGet = [];
 
-        socials.forEach((social, index) => {
+        socials.forEach((social) => {
             arrToGet.push(
-                <div className='d-flex align-items-center mb-1' key={index}>
-                    <div className='d-flex w-25'>
+                <div className='d-flex align-items-center mb-1' key={social.id}>
+                    <div>
                         <Form.Control
-                            name={`link${index}.platform`}
-                            value={values[`link${index}.platform`]}
+                            name={`link${social.id}.platform`}
+                            value={values[`link${social.id}.platform`]}
                             onChange={handleChange}
                             placeholder='Platform' />
 
@@ -50,10 +58,15 @@ function ContactForm(props) {
                     <span className='mx-1'>:</span>
 
                     <Form.Control
-                        name={`link${index}.url`}
-                        value={values[`link${index}.url`]}
+                        name={`link${social.id}.url`}
+                        value={values[`link${social.id}.url`]}
                         onChange={handleChange}
                         placeholder='https://example.com' />
+
+                    <CgTrash
+                        size={24}
+                        className='discard cursorPoint'
+                        onClick={() => handleRemovingSocial(social.id)} />
                 </div>
             );
         })
@@ -61,8 +74,19 @@ function ContactForm(props) {
     }
 
     function handleAddingSocial() {
-        const socialToAdd = { platform: '', url: '', id: socials.length }
+        const socialToAdd = { platform: '', url: '', id: cryptoRandomString({ length: 3 }) }
         setSocials((state) => [...state, socialToAdd])
+    }
+
+    function handleRemovingSocial(id) {
+        const i = socials.findIndex((val) => val.id === id)
+        const temp = socials;
+
+        temp.splice(i, 1);
+
+        console.log(temp)
+        delete values[`link${id}`]
+        setSocials([...temp])
     }
 
     return (
@@ -96,19 +120,22 @@ function ContactForm(props) {
                                 className="nameInfo d-flex flex-column justify-content-around w-75">
 
                                 <Form.Control
-                                    className='ml-2'
+                                    className={`ml-2 ${errors.fName && touched.fName ? 'error' : ''}`}
                                     placeholder='First Name'
                                     type="text"
                                     name="fName"
+                                    onBlur={handleBlur}
                                     value={values.fName}
                                     onChange={handleChange} />
                                 <Form.Control
-                                    className='ml-2'
+                                    className={`ml-2 ${errors.lName && touched.lName ? 'error' : ''}`}
                                     placeholder='Last Name'
                                     type="text"
                                     name="lName"
                                     value={values.lName}
+                                    onBlur={handleBlur}
                                     onChange={handleChange} />
+
                             </div>
                         </div>
 
@@ -117,16 +144,18 @@ function ContactForm(props) {
                         <Form.Control
                             type="email"
                             name='email'
-                            className='mb-3'
+                            className={`${errors.email && touched.email ? 'error' : ''} mb-3`}
+                            onBlur={handleBlur}
                             placeholder="Enter email"
                             value={values.email}
                             onChange={handleChange} />
 
                         <Form.Control
                             type="text"
-                            className='mb-2'
                             placeholder="Enter Phone Number"
                             value={values.phoneNumber}
+                            className={`mb-2 ${errors.phoneNumber && touched.phoneNumber ? 'error' : ''} mb-3`}
+                            onBlur={handleBlur}
                             name='phoneNumber'
                             onChange={handleChange} />
                     </Form.Group>
@@ -149,7 +178,7 @@ function ContactForm(props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={() => submitRef.current.click()}>
+                <Button variant="primary" onClick={() => { console.log(errors); submitRef.current.click(); }}>
                     Continue
                 </Button>
             </Modal.Footer>
