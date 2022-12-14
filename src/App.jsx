@@ -13,6 +13,11 @@ function App() {
     setSuperForm([...temp])
   }
 
+  // useEffect(() => {
+  //   console.log(superForm)
+  // }, [superForm])
+
+
   return (
     <div className="App">
       <BrowserRouter>

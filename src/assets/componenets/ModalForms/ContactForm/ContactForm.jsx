@@ -16,23 +16,48 @@ import './formStyle.css'
 import contactSchema from '../schemas/contactSchema';
 
 function ContactForm(props) {
-
     const uploadRef = useRef(null);
     const submitRef = useRef(null)
+
     const [imgState, setImgState] = useState();
     const [socials, setSocials] = useState([]);
-    const { values, errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
+    const { values, errors, touched, handleChange, handleSubmit, handleBlur, setFieldValue } = useFormik({
         initialValues: {
-            fName: '',
-            lName: '',
-            email: '',
-            phoneNumber: '',
+            fName: props.contactInfo ? props.contactInfo.fName : '',
+            lName: props.contactInfo ? props.contactInfo.lName : '',
+            email: props.contactInfo ? props.contactInfo.email : '',
+            phoneNumber: props.contactInfo ? props.contactInfo.phoneNumber : '',
+            socials: {},
         },
         onSubmit,
         validationSchema: contactSchema,
     })
 
+    useEffect(() => {
+        const contactInfo = props.contactInfo;
+
+        if (contactInfo) {
+            setSocials([])
+            values.socials = [];
+            Object.entries(contactInfo).map(([key, val]) => {
+                // console.log(val)
+                if (key.includes('link')) {
+                    console.log(key, val)
+                    const objToPush = { 'platform': val.platform, 'url': val.url, 'id': key.substring(4, 7) }
+                    values.socials[key] = val;
+                    setSocials(
+                        (prev) => [...prev, objToPush]
+                    )
+                    console.log(Array.isArray(values.socials))
+                }
+
+            })
+        }
+    }, [])
+
+
     function onSubmit(values, actions) {
+        console.log(props)
         props.setSuperFormAt({ ...values, imgState }, 0)
         props.incrementProgress();
     }
@@ -49,8 +74,8 @@ function ContactForm(props) {
                 <div className='d-flex align-items-center mb-1' key={social.id}>
                     <div>
                         <Form.Control
-                            name={`link${social.id}.platform`}
-                            value={values[`link${social.id}.platform`]}
+                            name={`socials.link${social.id}.platform`}
+                            value={values[`socials.link${social.id}.platform`]}
                             onChange={handleChange}
                             placeholder='Platform' />
 
