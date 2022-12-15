@@ -11,23 +11,41 @@ import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { ErrorMessage, useFormik } from 'formik'
 
 function EduForm(props) {
-    const [asked, setAsked] = useState(false);
-    const [formErrors, setFormErrors] = useState({});
-    const submitRef = useRef(null);
+    const [formErrors, setFormErrors] = useState({})
+    const submitRef = useRef(null)
     const [schools, setSchools] = useState([]);
     const { values, touched, handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: {
+            schools: props.schoolInfo ? props.schoolInfo.schools : {}
         },
         onSubmit,
     })
 
-    // useEffect(() => { console.log(formErrors) }, [formErrors])
+    useEffect(() => {
+        const schoolInfo = props.schoolInfo;
+
+        if (schoolInfo) {
+            setSchools([])
+            values.schools = {}
+            Object.entries(schoolInfo.schools).map(([key, val]) => {
+                const objToPush = {
+                    employer: val.employer,
+                    position: val.position,
+                    description: val.description,
+                    id: key.substring(4, 7)
+                };
+                setSchools((prev) => [...prev, objToPush])
+                values.schools[key] = val;
+            })
+        }
+        console.log(values)
+    }, [])
 
 
     function validateForm(values) {
         setFormErrors({});
         let valid = true;
-        const valToArray = Object.entries(values);
+        const valToArray = Object.entries(values.schools);
 
         valToArray.forEach((val) => {
             const errors = {}
@@ -55,20 +73,18 @@ function EduForm(props) {
         })
 
 
-
         return valid;
     }
 
     function onSubmit(values, action) {
-        if (validateForm(values) && asked) {
-            console.log(values)
+        if (validateForm(values)) {
+            props.setSuperFormAt(values, 1);
             props.incrementProgress();
         }
     }
 
     function handleAddingSchool() {
         const schoolToAdd = { employer: '', position: '', description: '', id: cryptoRandomString({ length: 3 }) }
-        values[`link${schoolToAdd.id}`] = {};
         setSchools((state) => [...state, schoolToAdd])
     }
 
@@ -77,7 +93,7 @@ function EduForm(props) {
         const temp = schools;
 
         temp.splice(i, 1);
-        delete values[`link${id}`]
+        delete values.schools[`link${id}`]
         setSchools([...temp])
     }
 
@@ -85,6 +101,10 @@ function EduForm(props) {
         const arrToGet = [];
 
         schools.forEach((school, index) => {
+            if (!values.schools[`link${school.id}`]) {
+                values.schools[`link${school.id}`] = {}
+            }
+
             const errors = formErrors;
             const errPointer = 'link' + school.id
 
@@ -108,9 +128,9 @@ function EduForm(props) {
                             <div className="mr d-flex flex-column">
                                 <Form.Control
                                     className={errClassEmployer}
-                                    value={values[`school${school.id}`]}
+                                    value={values.schools[`link${school.id}`].employer}
                                     onChange={handleChange}
-                                    name={`link${school.id}.employer`}
+                                    name={`schools.link${school.id}.employer`}
                                     type='text'
                                     placeholder='School' />
                                 <span className='errorExplain'>
@@ -122,9 +142,9 @@ function EduForm(props) {
 
                                 <Form.Control
                                     className={errClassPosition}
-                                    value={values[`school${school.id}`]}
+                                    value={values.schools[`link${school.id}`].position}
                                     onChange={handleChange}
-                                    name={`link${school.id}.position`}
+                                    name={`schools.link${school.id}.position`}
                                     type='text'
                                     placeholder='Subject' />
 
@@ -144,9 +164,9 @@ function EduForm(props) {
                             <input
                                 type="date"
                                 id='startDate'
-                                value={values[`school${school.id}`]}
+                                value={values.schools[`link${school.id}`].startDate}
                                 onChange={handleChange}
-                                name={`link${school.id}.startDate`} />
+                                name={`schools.link${school.id}.startDate`} />
                             <span className='errorExplain'>
                                 {errors[errPointer] ? errors[errPointer].startDate : ''}
                             </span>
@@ -158,9 +178,9 @@ function EduForm(props) {
                             <input
                                 type="date"
                                 id='endDate'
-                                value={values[`school${school.id}`]}
+                                value={values.schools[`link${school.id}`].endDate}
                                 onChange={handleChange}
-                                name={`link${school.id}.endDate`} />
+                                name={`schools.link${school.id}.endDate`} />
                             <span className='errorExplain'>
                                 {errors[errPointer] ? errors[errPointer].endDate : ''}
                             </span>
@@ -173,9 +193,9 @@ function EduForm(props) {
                     <Form.Group>
                         <Form.Control
                             as="textarea"
-                            value={values[`school${school.id}`]}
+                            value={values.schools[`link${school.id}`].description}
                             onChange={handleChange}
-                            name={`link${school.id}.description`}
+                            name={`schools.link${school.id}.description`}
                             rows={5}
                             className='noResize mt-3'
                             placeholder='Description (Optional)' />
@@ -221,6 +241,7 @@ function EduForm(props) {
             </Modal.Footer>
         </Modal >
     )
+
 }
 
 export default EduForm

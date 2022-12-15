@@ -2,6 +2,8 @@ import React from 'react'
 import ContactForm from '../ModalForms/ContactForm/ContactForm'
 import EduForm from '../ModalForms/ContactForm/eduForm';
 import WorkForm from '../ModalForms/ContactForm/workForm';
+import SkillsForm from '../ModalForms/ContactForm/skillsForm';
+
 function ModalSwitch({ progress, incrementProgress, decrementProgress, setSuperFormAt, superForm }) {
     function modalByProg() {
         switch (progress) {
@@ -26,9 +28,14 @@ function ModalSwitch({ progress, incrementProgress, decrementProgress, setSuperF
                 return <EduForm
                     show={true}
                     incrementProgress={incrementProgress}
-                    decrementProgress={decrementProgress} />
+                    decrementProgress={decrementProgress}
+                    setSuperFormAt={setSuperFormAt}
+                    schoolInfo={superForm[2]} />
                 break;
-
+            case 4:
+                return <SkillsForm
+                    show={true} />
+                break;
             default:
                 break;
         }

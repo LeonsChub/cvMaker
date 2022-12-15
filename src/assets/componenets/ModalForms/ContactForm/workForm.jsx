@@ -27,7 +27,6 @@ function WorkForm(props) {
         if (workInfo) {
             setWorkplaces([])
             values.workplaces = {}
-            alert('prev info')
             Object.entries(workInfo.workplaces).map(([key, val]) => {
                 const objToPush = {
                     employer: val.employer,
@@ -94,7 +93,7 @@ function WorkForm(props) {
         const temp = workplaces;
 
         temp.splice(i, 1);
-        delete values[`link${id}`]
+        delete values.workplaces[`link${id}`]
         setWorkplaces([...temp])
     }
 

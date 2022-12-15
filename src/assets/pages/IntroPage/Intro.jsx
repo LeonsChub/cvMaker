@@ -7,7 +7,7 @@ import { HiOutlineDocumentDuplicate } from 'react-icons/hi'
 import { FaSearch } from 'react-icons/fa'
 
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import ContactForm from '../../componenets/ModalForms/ContactForm/ContactForm'
 import ModalSwitch from '../../componenets/ModalSwitch/ModalSwitch'
@@ -17,6 +17,10 @@ export const ACTIONS = {
 }
 function IntroPage({ setSuperFormAt, superForm }) {
     const [progress, setProgress] = useState(0);
+    useEffect(() => {
+        console.log(progress)
+    }, [progress])
+
 
     function incrementProgress() {
         setProgress((prev) => prev + 1);
