@@ -49,9 +49,29 @@ function SkillsForm(props) {
     }, [])
 
     function onSubmit(values, actions) {
+        let shallPass = true;
 
-        props.setSuperFormAt(values, 3)
-        props.incrementProgress();
+        Object.entries(values).forEach(([key, val]) => {
+            if (!val.skill) {
+                Object.entries(val).forEach(([key, val]) => {
+                    if (!val.skill) {
+                        console.log('empty skill')
+                        shallPass = false;
+                    }
+                })
+            }
+        })
+
+        if (shallPass) {
+            props.setSuperFormAt(values, 3)
+            props.incrementProgress();
+        }
+        else {
+            alert('Either fill optional fields or remove them')
+        }
+
+
+
     }
 
     function handleAddingSkill() {
@@ -79,7 +99,7 @@ function SkillsForm(props) {
             // const platVal = values.socials[`link${social.id}`] ? values.socials[`link${social.id}`].platform : '';
             // const urlVal = values.socials[`link${social.id}`] ? values.socials[`link${social.id}`].url : '';
             arrToGet.push(
-                <div className='d-flex align-items-center ' key={skill.id}>
+                <div className='d-flex align-items-center mb-1' key={skill.id}>
 
                     <Form.Control
                         name={`skills.link${skill.id}.skill`}

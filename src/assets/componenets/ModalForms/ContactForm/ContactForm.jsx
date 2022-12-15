@@ -68,17 +68,27 @@ function ContactForm(props) {
 
     function onSubmit(values, actions) {
         const objToAppend = { socials: {} };
+        let shallPass = true;
 
         Object.entries(values).forEach(([key, val]) => {
-            if (!key.includes('link')) {
-                objToAppend[key] = val;
-            } else {
-                objToAppend.socials[key] = val;
+            objToAppend[key] = val;
+            if (key === 'socials') {
+                Object.entries(val).map((val) => {
+                    if (!val[1].platform || !val[1].url) {
+                        shallPass = false;
+                    }
+                })
             }
         })
 
-        props.setSuperFormAt({ ...objToAppend, imgState }, 0)
-        props.incrementProgress();
+        if (shallPass) {
+            props.setSuperFormAt({ ...objToAppend, imgState }, 0)
+            props.incrementProgress();
+        }
+        else {
+            alert('Either fill optional fields or remove them')
+        }
+
     }
 
     function handleUpload(file) {
