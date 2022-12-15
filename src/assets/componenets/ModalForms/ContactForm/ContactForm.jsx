@@ -27,7 +27,7 @@ function ContactForm(props) {
             lName: props.contactInfo ? props.contactInfo.lName : '',
             email: props.contactInfo ? props.contactInfo.email : '',
             phoneNumber: props.contactInfo ? props.contactInfo.phoneNumber : '',
-            socials: {},
+            socials: props.contactInfo ? props.contactInfo.socials : {},
         },
         onSubmit,
         validationSchema: contactSchema,
@@ -38,27 +38,45 @@ function ContactForm(props) {
 
         if (contactInfo) {
             setSocials([])
-            values.socials = [];
+            values.socials = {};
             Object.entries(contactInfo).map(([key, val]) => {
-                // console.log(val)
-                if (key.includes('link')) {
-                    console.log(key, val)
-                    const objToPush = { 'platform': val.platform, 'url': val.url, 'id': key.substring(4, 7) }
-                    values.socials[key] = val;
-                    setSocials(
-                        (prev) => [...prev, objToPush]
-                    )
-                    console.log(Array.isArray(values.socials))
+                if (key.includes('socials')) {
+                    Object.entries(val).forEach(([socialKey, socialValue]) => {
+                        if (socialKey.includes('link')) {
+                            const objToPush = {
+                                'platform': socialValue.platform,
+                                'url': socialValue.url,
+                                'id': socialKey.substring(4, 7)
+                            }
+
+                            setSocials(
+                                (prev) => [...prev, objToPush]
+                            )
+                        }
+                    })
+
+                    values[key] = val;
+
                 }
 
             })
+
         }
     }, [])
 
 
     function onSubmit(values, actions) {
-        console.log(props)
-        props.setSuperFormAt({ ...values, imgState }, 0)
+        const objToAppend = { socials: {} };
+
+        Object.entries(values).forEach(([key, val]) => {
+            if (!key.includes('link')) {
+                objToAppend[key] = val;
+            } else {
+                objToAppend.socials[key] = val;
+            }
+        })
+
+        props.setSuperFormAt({ ...objToAppend, imgState }, 0)
         props.incrementProgress();
     }
 
@@ -70,12 +88,17 @@ function ContactForm(props) {
         const arrToGet = [];
 
         socials.forEach((social) => {
+            if (!values.socials[`link${social.id}`]) {
+                values.socials[`link${social.id}`] = {}
+            }
+            // const platVal = values.socials[`link${social.id}`] ? values.socials[`link${social.id}`].platform : '';
+            // const urlVal = values.socials[`link${social.id}`] ? values.socials[`link${social.id}`].url : '';
             arrToGet.push(
                 <div className='d-flex align-items-center mb-1' key={social.id}>
                     <div>
                         <Form.Control
                             name={`socials.link${social.id}.platform`}
-                            value={values[`socials.link${social.id}.platform`]}
+                            value={values.socials[`link${social.id}`].platform}
                             onChange={handleChange}
                             placeholder='Platform' />
 
@@ -83,8 +106,8 @@ function ContactForm(props) {
                     <span className='mx-1'>:</span>
 
                     <Form.Control
-                        name={`link${social.id}.url`}
-                        value={values[`link${social.id}.url`]}
+                        name={`socials.link${social.id}.url`}
+                        value={values.socials[`link${social.id}`].url}
                         onChange={handleChange}
                         placeholder='https://example.com' />
 
