@@ -16,7 +16,10 @@ function ModalSwitch({ progress, incrementProgress, decrementProgress, setSuperF
                 return <WorkForm
                     show={true}
                     incrementProgress={incrementProgress}
-                    decrementProgress={decrementProgress} />
+                    decrementProgress={decrementProgress}
+                    setSuperFormAt={setSuperFormAt}
+                    workInfo={superForm[1]} />
+
                 break;
 
             case 3:

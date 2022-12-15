@@ -16,17 +16,37 @@ function WorkForm(props) {
     const [workplaces, setWorkplaces] = useState([]);
     const { values, touched, handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: {
+            workplaces: props.workInfo ? props.workInfo.workplaces : {}
         },
         onSubmit,
     })
 
-    // useEffect(() => { console.log(formErrors) }, [formErrors])
+    useEffect(() => {
+        const workInfo = props.workInfo;
+
+        if (workInfo) {
+            setWorkplaces([])
+            values.workplaces = {}
+            alert('prev info')
+            Object.entries(workInfo.workplaces).map(([key, val]) => {
+                const objToPush = {
+                    employer: val.employer,
+                    position: val.position,
+                    description: val.description,
+                    id: key.substring(4, 7)
+                };
+                setWorkplaces((prev) => [...prev, objToPush])
+                values.workplaces[key] = val;
+            })
+        }
+        console.log(values)
+    }, [])
 
 
     function validateForm(values) {
         setFormErrors({});
         let valid = true;
-        const valToArray = Object.entries(values);
+        const valToArray = Object.entries(values.workplaces);
 
         valToArray.forEach((val) => {
             const errors = {}
@@ -59,14 +79,13 @@ function WorkForm(props) {
 
     function onSubmit(values, action) {
         if (validateForm(values)) {
-            console.log((values))
+            props.setSuperFormAt(values, 1);
             props.incrementProgress();
         }
     }
 
     function handleAddingWorkPlace() {
         const workplaceToAdd = { employer: '', position: '', description: '', id: cryptoRandomString({ length: 3 }) }
-        values[`link${workplaceToAdd.id}`] = {};
         setWorkplaces((state) => [...state, workplaceToAdd])
     }
 
@@ -83,6 +102,10 @@ function WorkForm(props) {
         const arrToGet = [];
 
         workplaces.forEach((workPlace, index) => {
+            if (!values.workplaces[`link${workPlace.id}`]) {
+                values.workplaces[`link${workPlace.id}`] = {}
+            }
+
             const errors = formErrors;
             const errPointer = 'link' + workPlace.id
 
@@ -106,9 +129,9 @@ function WorkForm(props) {
                             <div className="mr d-flex flex-column">
                                 <Form.Control
                                     className={errClassEmployer}
-                                    value={values[`workplace${workPlace.id}`]}
+                                    value={values.workplaces[`link${workPlace.id}`].employer}
                                     onChange={handleChange}
-                                    name={`link${workPlace.id}.employer`}
+                                    name={`workplaces.link${workPlace.id}.employer`}
                                     type='text'
                                     placeholder='Employer' />
                                 <span className='errorExplain'>
@@ -120,9 +143,9 @@ function WorkForm(props) {
 
                                 <Form.Control
                                     className={errClassPosition}
-                                    value={values[`workplace${workPlace.id}`]}
+                                    value={values.workplaces[`link${workPlace.id}`].position}
                                     onChange={handleChange}
-                                    name={`link${workPlace.id}.position`}
+                                    name={`workplaces.link${workPlace.id}.position`}
                                     type='text'
                                     placeholder='Position' />
 
@@ -142,9 +165,9 @@ function WorkForm(props) {
                             <input
                                 type="date"
                                 id='startDate'
-                                value={values[`workplace${workPlace.id}`]}
+                                value={values.workplaces[`link${workPlace.id}`].startDate}
                                 onChange={handleChange}
-                                name={`link${workPlace.id}.startDate`} />
+                                name={`workplaces.link${workPlace.id}.startDate`} />
                             <span className='errorExplain'>
                                 {errors[errPointer] ? errors[errPointer].startDate : ''}
                             </span>
@@ -156,9 +179,9 @@ function WorkForm(props) {
                             <input
                                 type="date"
                                 id='endDate'
-                                value={values[`workplace${workPlace.id}`]}
+                                value={values.workplaces[`link${workPlace.id}`].endDate}
                                 onChange={handleChange}
-                                name={`link${workPlace.id}.endDate`} />
+                                name={`workplaces.link${workPlace.id}.endDate`} />
                             <span className='errorExplain'>
                                 {errors[errPointer] ? errors[errPointer].endDate : ''}
                             </span>
@@ -171,9 +194,9 @@ function WorkForm(props) {
                     <Form.Group>
                         <Form.Control
                             as="textarea"
-                            value={values[`workplace${workPlace.id}`]}
+                            value={values.workplaces[`link${workPlace.id}`].description}
                             onChange={handleChange}
-                            name={`link${workPlace.id}.description`}
+                            name={`workplaces.link${workPlace.id}.description`}
                             rows={5}
                             className='noResize mt-3'
                             placeholder='Description (Optional)' />

@@ -133,7 +133,7 @@ function ContactForm(props) {
         temp.splice(i, 1);
 
         console.log(temp)
-        delete values[`link${id}`]
+        delete values.socials[`link${id}`]
         setSocials([...temp])
     }
 
