@@ -6,6 +6,7 @@ import { AiFillPhone } from 'react-icons/ai'
 import { AiOutlineComment } from 'react-icons/ai'
 
 function BuildPage({ superForm }) {
+
     function renderSocials() {
         const toReturn = [];
 
@@ -21,9 +22,30 @@ function BuildPage({ superForm }) {
         return toReturn;
     }
 
+    function renderSkills() {
+        const toReturn = [];
+
+        Object.entries(superForm[3].skills).map(([key, val]) => {
+            toReturn.push(
+                <span className='skillItem px-2' key={key} >
+                    <p>{`${val.skill}`} </p>
+                    <span className='mx-1'>:</span>
+                    <p>{`${val.prof ? val.prof : 'Begginer'}`} </p>
+                </span >
+            );
+        })
+        return toReturn;
+    }
+
+    function renderImage() {
+        return superForm[0].imgState ? <img src={URL.createObjectURL(superForm[0].imgState)} /> : <img alt='prp' />
+        // <img src={URL.createObjectURL(FILE_OBJECT)} /> 
+    }
+
     return (
         <div id='resumeWrap'>
             <div id="smallColumn">
+                {renderImage()}
                 <h3 className="fullName">
                     {`${superForm[0].fName} ${superForm[0].lName}`}
                 </h3>
@@ -49,6 +71,7 @@ function BuildPage({ superForm }) {
 
                 <div id="skillsWrap">
                     <h4>Skills</h4>
+                    <div className="d-flex flex-column px-1">{renderSkills()}</div>
                 </div>
             </div>
 

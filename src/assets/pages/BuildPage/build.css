@@ -59,7 +59,7 @@ a:hover {
     min-height: 25%;
 }
 
-.contactInfoWrap>h4 {
+h4 {
     align-self: center;
     text-decoration: underline;
 }
@@ -75,4 +75,12 @@ span .icon {
 
 #socialMediasWrap {
     align-self: center;
+}
+
+#skillsWrap {
+    text-align: center;
+}
+
+.skillItem {
+    display: flex;
 }
