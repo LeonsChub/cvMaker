@@ -90,7 +90,6 @@ function SkillsForm(props) {
                         value={values.skills[`link${skill.id}`].prof}
                         onChange={handleChange}>
 
-                        <option>Proficiency</option>
                         <option value="Begginer">Begginer</option>
                         <option value="Intermediate">Intermediate</option>
                         <option value="Advanced">Advanced</option>

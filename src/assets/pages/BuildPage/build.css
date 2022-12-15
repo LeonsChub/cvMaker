@@ -1,12 +1,25 @@
+p {
+    margin: 0 !important;
+}
+
+a {
+    text-decoration: none !important;
+    color: rgb(179, 179, 179) !important;
+}
+
+a:hover {
+    color: rgb(233, 233, 233) !important;
+}
+
 #resumeWrap {
     background-color: rgb(216, 216, 216);
-    height: 100vh;
-    width: 100vw;
+    width: 21cm;
+    height: 29.7cm;
 
+    margin: auto;
     display: grid;
 
     grid-template-columns: 1fr 1fr 1fr;
-
 }
 
 #smallColumn {
@@ -21,4 +34,45 @@
 #thickColumn {
     grid-column-start: 2;
     grid-column-end: 4;
+}
+
+.fullName {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    width: fit-content;
+    margin-inline: auto;
+
+    font-weight: lighter;
+
+    display: flex;
+    flex-flow: column;
+
+}
+
+.contactInfoWrap {
+    text-align: center;
+    display: flex;
+    flex-flow: column;
+
+    align-items: flex-start;
+
+    min-height: 25%;
+}
+
+.contactInfoWrap>h4 {
+    align-self: center;
+    text-decoration: underline;
+}
+
+span .icon {
+    margin-inline: 0.35em;
+}
+
+.contactItemWrap {
+    display: flex;
+    align-items: center;
+}
+
+#socialMediasWrap {
+    align-self: center;
 }
