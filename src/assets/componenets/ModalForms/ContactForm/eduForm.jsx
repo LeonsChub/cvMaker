@@ -38,7 +38,6 @@ function EduForm(props) {
                 values.schools[key] = val;
             })
         }
-        console.log(values)
     }, [])
 
 
@@ -78,7 +77,7 @@ function EduForm(props) {
 
     function onSubmit(values, action) {
         if (validateForm(values)) {
-            props.setSuperFormAt(values, 1);
+            props.setSuperFormAt(values, 2);
             props.incrementProgress();
         }
     }

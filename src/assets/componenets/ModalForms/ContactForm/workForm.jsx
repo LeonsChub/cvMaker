@@ -38,7 +38,6 @@ function WorkForm(props) {
                 values.workplaces[key] = val;
             })
         }
-        console.log(values)
     }, [])
 
 

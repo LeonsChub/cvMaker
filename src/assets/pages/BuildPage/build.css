@@ -1,0 +1,24 @@
+#resumeWrap {
+    background-color: rgb(216, 216, 216);
+    height: 100vh;
+    width: 100vw;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr;
+
+}
+
+#smallColumn {
+    grid-column-start: 1;
+    grid-column-end: 2;
+
+    background-color: rgb(26, 16, 56);
+
+    color: antiquewhite;
+}
+
+#thickColumn {
+    grid-column-start: 2;
+    grid-column-end: 4;
+}

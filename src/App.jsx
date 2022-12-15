@@ -26,7 +26,8 @@ function App() {
             element={<IntroPage
               setSuperFormAt={setSuperFormAt}
               superForm={superForm} />} />
-          <Route path="buildPage" element={<BuildPage />} />
+
+          <Route path="preview" element={<BuildPage superForm={superForm} />} />
         </Routes>
       </BrowserRouter>
     </div>

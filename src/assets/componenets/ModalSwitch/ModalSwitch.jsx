@@ -1,8 +1,11 @@
 import React from 'react'
+
 import ContactForm from '../ModalForms/ContactForm/ContactForm'
 import EduForm from '../ModalForms/ContactForm/eduForm';
 import WorkForm from '../ModalForms/ContactForm/workForm';
 import SkillsForm from '../ModalForms/ContactForm/skillsForm';
+
+import { Navigate } from 'react-router-dom';
 
 function ModalSwitch({ progress, incrementProgress, decrementProgress, setSuperFormAt, superForm }) {
     function modalByProg() {
@@ -34,7 +37,13 @@ function ModalSwitch({ progress, incrementProgress, decrementProgress, setSuperF
                 break;
             case 4:
                 return <SkillsForm
-                    show={true} />
+                    show={true}
+                    incrementProgress={incrementProgress}
+                    decrementProgress={decrementProgress}
+                    setSuperFormAt={setSuperFormAt}
+                    skillsInfo={superForm[3]} />
+            case 5:
+                return <Navigate to={'/preview'} />
                 break;
             default:
                 break;

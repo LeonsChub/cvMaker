@@ -21,6 +21,7 @@ function ContactForm(props) {
 
     const [imgState, setImgState] = useState();
     const [socials, setSocials] = useState([]);
+
     const { values, errors, touched, handleChange, handleSubmit, handleBlur, setFieldValue } = useFormik({
         initialValues: {
             fName: props.contactInfo ? props.contactInfo.fName : '',

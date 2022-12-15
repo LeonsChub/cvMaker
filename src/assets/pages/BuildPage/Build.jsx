@@ -1,8 +1,17 @@
 import React from 'react'
+import './build.css'
 
-function BuildPage() {
+function BuildPage({ superForm }) {
+    console.log(superForm)
     return (
-        <div>BuildPage</div>
+        <div id='resumeWrap'>
+            <div id="smallColumn">
+                <h2 className="fullName">
+                    {`${superForm[0].fName} ${superForm[0].lName}`}
+                </h2>
+            </div>
+            <div id="thickColumn">2</div>
+        </div>
     )
 }
 

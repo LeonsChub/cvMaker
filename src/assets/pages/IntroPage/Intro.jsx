@@ -17,9 +17,7 @@ export const ACTIONS = {
 }
 function IntroPage({ setSuperFormAt, superForm }) {
     const [progress, setProgress] = useState(0);
-    useEffect(() => {
-        console.log(progress)
-    }, [progress])
+
 
 
     function incrementProgress() {
