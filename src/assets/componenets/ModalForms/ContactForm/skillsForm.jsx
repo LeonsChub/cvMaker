@@ -10,6 +10,8 @@ import { AiOutlinePlusCircle } from 'react-icons/ai'
 
 import { ErrorMessage, useFormik } from 'formik'
 
+import { Link } from 'react-router-dom';
+
 function SkillsForm(props) {
     const submitRef = useRef(null);
 
@@ -90,7 +92,7 @@ function SkillsForm(props) {
                         value={values.skills[`link${skill.id}`].prof}
                         onChange={handleChange}>
 
-                        <option value="Begginer">Begginer</option>
+                        <option value="Begginer" selected>Begginer</option>
                         <option value="Intermediate">Intermediate</option>
                         <option value="Advanced">Advanced</option>
                         <option value="Expert">Expert</option>
@@ -136,6 +138,7 @@ function SkillsForm(props) {
                 <Button variant="success" onClick={() => { props.decrementProgress(); }}>
                     Previous page
                 </Button>
+
 
                 <Button variant="primary" onClick={() => { submitRef.current.click(); }}>
                     Preview
